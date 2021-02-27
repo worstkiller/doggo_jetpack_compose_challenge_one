@@ -21,10 +21,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.vikas.doggoadoption.R
 import com.vikas.doggoadoption.ui.theme.DoggoAdoptionTheme
 import com.vikas.doggoadoption.ui.theme.Typography
@@ -42,18 +45,15 @@ fun HomeRecentSearch() {
 
         Spacer(modifier = Modifier.size(16.dp))
 
-        LazyColumn(
-            state = rememberLazyListState(),
+        Column(
             verticalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
 
         ) {
-            item {
-                repeat(10) {
-                    SearchItems(widthSize)
-                    Spacer(modifier = Modifier.size(16.dp))
-                }
+            repeat(10) {
+                SearchItems()
+                Spacer(modifier = Modifier.size(16.dp))
             }
         }
     }
@@ -61,33 +61,69 @@ fun HomeRecentSearch() {
 }
 
 @Composable
-fun SearchItems(widthSize: Dp) {
+fun SearchItems() {
     Card(
-        elevation = 4.dp,
-        shape = RoundedCornerShape(20.dp)
+        elevation = 2.dp,
+        shape = RoundedCornerShape(20.dp),
+        modifier = Modifier.padding(4.dp)
     ) {
         Row(
             modifier = Modifier
                 .background(shape = RoundedCornerShape(20.dp), color = Color.White)
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(8.dp)
         ) {
+
             Image(
                 painter = painterResource(id = R.drawable.sample_image_dog),
                 contentDescription = "recent image",
                 modifier = Modifier
                     .clip(shape = RoundedCornerShape(20.dp))
-                    .fillMaxWidth(.40f)
-                    .height(150.dp),
+                    .fillMaxWidth(.30f)
+                    .height(120.dp),
                 contentScale = ContentScale.Crop
             )
+
             Spacer(modifier = Modifier.size(16.dp))
+
             Column {
                 Text(
                     text = "Affenpinscher",
-                    style = Typography.h6,
+                    style = Typography.h6.copy(fontSize = 16.sp),
                     color = iconTintColor,
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier.padding(8.dp)
+                )
+
+                Text(
+                    text = "Breed: Toy",
+                    style = Typography.body1.copy(
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 14.sp
+                    ),
+                    color = iconTintColor.copy(alpha = 0.6f),
+                    modifier = Modifier.padding(start = 8.dp, bottom = 4.dp)
+                )
+
+                Text(
+                    text = "Life span: 10 - 12 years",
+                    style = Typography.body1.copy(
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 14.sp
+                    ),
+                    color = iconTintColor.copy(alpha = 0.6f),
+                    modifier = Modifier.padding(start = 8.dp, bottom = 4.dp)
+                )
+
+                Text(
+                    text = "Origin: Germany, France",
+                    style = Typography.body1.copy(
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 14.sp
+                    ),
+                    color = iconTintColor.copy(alpha = 0.6f),
+                    modifier = Modifier.padding(start = 8.dp, bottom = 4.dp),
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1
                 )
             }
         }
