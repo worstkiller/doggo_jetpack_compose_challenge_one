@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Doggo Adoption</string>
+    <string name="home_carousel_title">Trending</string>
+    <string name="home_categories_title">Categories</string>
+    <string name="home_recent_title">Recent</string>
 </resources>
