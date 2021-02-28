@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import com.vikas.doggoadoption.ui.components.DetailsComponent
 import com.vikas.doggoadoption.ui.components.HomeComponent
 import com.vikas.doggoadoption.ui.theme.DoggoAdoptionTheme
 import com.vikas.doggoadoption.ui.theme.backGroundColor
@@ -24,7 +25,7 @@ class MainActivity : AppCompatActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(color = backGroundColor) {
                     Column {
-                        HomeComponent()
+                        DetailsComponent()
                     }
                 }
             }
