@@ -40,10 +40,11 @@ class MainActivity : AppCompatActivity() {
                             DoggoNavigation.HOME -> {
                                 HomeComponent(
                                     breedItems,
-                                    liveSearchItems ?: listOf()
-                                ) { doggoNavigation ->
-                                    screenName = doggoNavigation
-                                }
+                                    liveSearchItems ?: listOf(), { doggoNavigation ->
+                                        screenName = doggoNavigation
+                                    }, {
+                                        doggoViewModel.searchRecentData(it)
+                                    })
                             }
                             is DoggoNavigation.HomeDetails -> {
                                 val screenHomeDetails = screenName as DoggoNavigation.HomeDetails
@@ -63,6 +64,6 @@ class MainActivity : AppCompatActivity() {
 @Composable
 fun DefaultPreview() {
     DoggoAdoptionTheme {
-        HomeComponent(DoggoViewModel().sampleBreed(), DoggoViewModel().sampleBreed()) {}
+        HomeComponent(DoggoViewModel().sampleBreed(), DoggoViewModel().sampleBreed(), {}, {})
     }
 }

@@ -15,10 +15,11 @@ fun HomeComponent(
     observeBreed: List<DoggoBreedResponseModel>?,
     liveRecentSearchItems: List<DoggoBreedResponseModel>,
     action: (DoggoNavigation) -> Unit,
+    searchRecent: (String) -> Unit
 ) {
     LazyColumn {
         item {
-            ToolbarHome()
+            ToolbarHome(searchRecent)
             HomeCarousel(observeBreed, action)
             HomeCategories()
             HomeRecentSearch(liveRecentSearchItems, action)
@@ -32,7 +33,6 @@ fun HomeComponentPreview() {
     DoggoAdoptionTheme {
         HomeComponent(
             DoggoViewModel().sampleBreed(),
-            DoggoViewModel().sampleBreed()
-        ) {}
+            DoggoViewModel().sampleBreed(), {}, {})
     }
 }

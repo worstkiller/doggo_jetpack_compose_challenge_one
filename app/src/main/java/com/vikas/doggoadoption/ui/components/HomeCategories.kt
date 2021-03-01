@@ -1,6 +1,8 @@
 package com.vikas.doggoadoption.ui.components
 
+import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -11,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -57,7 +60,7 @@ fun HomeCategories() {
 
 @Composable
 fun HomeCategoriesItem(categoriesModel: CategoriesModel) {
-
+    val context = LocalContext.current
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -70,7 +73,12 @@ fun HomeCategoriesItem(categoriesModel: CategoriesModel) {
                     shape = RoundedCornerShape(15.dp),
                     color = categoriesModel.backGroundColor
                 )
-                .padding(16.dp),
+                .padding(16.dp)
+                .clickable {
+                    Toast
+                        .makeText(context, categoriesModel.title, Toast.LENGTH_LONG)
+                        .show()
+                },
             tint = categoriesModel.accent
         )
         Spacer(modifier = Modifier.size(16.dp))

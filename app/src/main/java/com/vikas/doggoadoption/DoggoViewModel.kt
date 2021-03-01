@@ -31,6 +31,15 @@ class DoggoViewModel : ViewModel() {
         return _recent
     }
 
+    fun searchRecentData(text: String) {
+        val search = _recent.value?.filter { it.name.contains(text) }
+        if (text.isEmpty()) {
+            _recent.value = _breed.value?.shuffled()
+        } else {
+            _recent.value = search
+        }
+    }
+
     fun observeScreen(): LiveData<DoggoNavigation> {
         return screen
     }
@@ -39,8 +48,8 @@ class DoggoViewModel : ViewModel() {
         viewModelScope.launch {
             repository.getBreeds().collect {
                 if (it.isNotEmpty()) {
-                    _breed.value = it
-                    _recent.value = it.asReversed()
+                    _breed.value = it.shuffled()
+                    _recent.value = _breed.value?.shuffled()
                 }
             }
         }

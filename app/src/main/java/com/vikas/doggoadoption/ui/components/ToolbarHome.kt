@@ -1,8 +1,10 @@
 package com.vikas.doggoadoption.ui.components
 
+import android.widget.Toast
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -12,7 +14,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vikas.doggoadoption.R
@@ -21,7 +25,8 @@ import com.vikas.doggoadoption.ui.theme.iconTintColor
 import com.vikas.doggoadoption.ui.theme.searchBackground
 
 @Composable
-fun ToolbarHome() {
+fun ToolbarHome(searchRecent: (String) -> Unit) {
+    val context = LocalContext.current
     var searchText by remember { mutableStateOf("") }
     Row(
         modifier = Modifier
@@ -34,7 +39,13 @@ fun ToolbarHome() {
         Icon(
             painter = painterResource(id = R.drawable.ic_drawer),
             contentDescription = "drawer",
-            modifier = Modifier.size(20.dp),
+            modifier = Modifier
+                .size(20.dp)
+                .clickable {
+                    Toast
+                        .makeText(context, "Drawer", Toast.LENGTH_LONG)
+                        .show()
+                },
             tint = iconTintColor
         )
 
@@ -42,7 +53,10 @@ fun ToolbarHome() {
 
         BasicTextField(
             value = searchText,
-            onValueChange = { searchText = it },
+            onValueChange = {
+                searchText = it
+                searchRecent(it)
+            },
             modifier = Modifier
                 .background(shape = RoundedCornerShape(10.dp), color = searchBackground)
                 .border(width = 2.dp, shape = RoundedCornerShape(10.dp), color = Color.White)
@@ -73,8 +87,14 @@ fun ToolbarHome() {
 
         Icon(
             painter = painterResource(id = R.drawable.ic_bell),
-            contentDescription = "search",
-            modifier = Modifier.size(20.dp),
+            contentDescription = "notification",
+            modifier = Modifier
+                .size(20.dp)
+                .clickable {
+                    Toast
+                        .makeText(context, "Notifications", Toast.LENGTH_LONG)
+                        .show()
+                },
             tint = iconTintColor
         )
     }
@@ -84,6 +104,6 @@ fun ToolbarHome() {
 @Composable
 fun ToolbarHomePreview() {
     DoggoAdoptionTheme {
-        ToolbarHome()
+        ToolbarHome {}
     }
 }
