@@ -24,16 +24,23 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.vikas.doggoadoption.DoggoViewModel
 import com.vikas.doggoadoption.R
+import com.vikas.doggoadoption.data.DoggoBreedResponseModel
 import com.vikas.doggoadoption.data.DoggoNavigation
 import com.vikas.doggoadoption.ui.theme.DoggoAdoptionTheme
+import com.vikas.doggoadoption.ui.theme.Teal200
 import com.vikas.doggoadoption.ui.theme.Typography
 import com.vikas.doggoadoption.ui.theme.iconTintColor
+import dev.chrisbanes.accompanist.coil.CoilImage
 
 @Composable
-fun DetailsComponent(action: (screen: DoggoNavigation) -> Unit) {
+fun DetailsComponent(
+    doggoBreedResponseModel: DoggoBreedResponseModel,
+    action: (screen: DoggoNavigation) -> Unit
+) {
     val context = LocalContext.current
-    val temperament = "Stubborn, Curious, Playful, Adventurous, Active, Fun-loving".split(",")
+    val temperament = doggoBreedResponseModel.temperament.split(",")
 
     Column(modifier = Modifier.fillMaxWidth()) {
 
@@ -41,14 +48,30 @@ fun DetailsComponent(action: (screen: DoggoNavigation) -> Unit) {
 
             Box(contentAlignment = Alignment.BottomCenter) {
 
-                Image(
+                CoilImage(
+                    data = doggoBreedResponseModel.image.url,
+                    contentDescription = doggoBreedResponseModel.name,
                     alignment = Alignment.TopCenter,
-                    painter = painterResource(id = R.drawable.sample_image_dog),
-                    contentDescription = "full screen details",
                     modifier = Modifier
                         .fillMaxWidth()
                         .fillMaxHeight(.60f),
                     contentScale = ContentScale.Crop,
+                    loading = {
+                        Box(
+                            modifier = Modifier.background(
+                                shape = RoundedCornerShape(20.dp),
+                                color = Teal200
+                            )
+                        )
+                    },
+                    error = {
+                        Box(
+                            modifier = Modifier.background(
+                                shape = RoundedCornerShape(20.dp),
+                                color = Teal200
+                            )
+                        )
+                    }
                 )
 
                 Box(
@@ -98,14 +121,14 @@ fun DetailsComponent(action: (screen: DoggoNavigation) -> Unit) {
         ) {
 
             Text(
-                text = "Name: Hound",
+                text = "Name: ${doggoBreedResponseModel.name}",
                 color = iconTintColor,
                 style = Typography.h6,
                 modifier = Modifier.padding(16.dp)
             )
 
             Text(
-                text = "Breed: Toy",
+                text = "Breed: ${doggoBreedResponseModel.breed_group ?: "NA"}",
                 style = Typography.subtitle2.copy(
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 16.sp
@@ -115,7 +138,7 @@ fun DetailsComponent(action: (screen: DoggoNavigation) -> Unit) {
             )
 
             Text(
-                text = "Life span: 10 - 12 years",
+                text = "Life span: ${doggoBreedResponseModel.life_span}",
                 style = Typography.subtitle2.copy(
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 16.sp
@@ -125,7 +148,7 @@ fun DetailsComponent(action: (screen: DoggoNavigation) -> Unit) {
             )
 
             Text(
-                text = "Origin: Germany, France",
+                text = "Origin: ${doggoBreedResponseModel.origin ?: doggoBreedResponseModel.country_code ?: "NA"}",
                 style = Typography.subtitle2.copy(
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 16.sp
@@ -160,6 +183,6 @@ fun DetailsComponent(action: (screen: DoggoNavigation) -> Unit) {
 @Composable
 fun DetailsComponentPreview() {
     DoggoAdoptionTheme {
-        DetailsComponent() {}
+        DetailsComponent(doggoBreedResponseModel = DoggoViewModel().sampleBreed().first()) {}
     }
 }

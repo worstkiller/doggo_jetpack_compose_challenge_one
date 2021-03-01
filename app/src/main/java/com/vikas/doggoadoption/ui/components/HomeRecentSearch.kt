@@ -1,13 +1,11 @@
 package com.vikas.doggoadoption.ui.components
 
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -36,7 +34,7 @@ import dev.chrisbanes.accompanist.coil.CoilImage
 @Composable
 fun HomeRecentSearch(
     recentSearch: List<DoggoBreedResponseModel>,
-    action: (DoggoNavigation, DoggoBreedResponseModel) -> Unit,
+    action: (DoggoNavigation) -> Unit,
 ) {
 
     Column(modifier = Modifier.padding(16.dp)) {
@@ -65,7 +63,7 @@ fun HomeRecentSearch(
 
 @Composable
 fun SearchItems(
-    action: (DoggoNavigation, DoggoBreedResponseModel) -> Unit,
+    action: (DoggoNavigation) -> Unit,
     doggoBreedResponseModel: DoggoBreedResponseModel
 ) {
 
@@ -76,7 +74,7 @@ fun SearchItems(
         shape = RoundedCornerShape(20.dp),
         modifier = Modifier
             .clickable {
-                action(DoggoNavigation.HOME_DETAILS, doggoBreedResponseModel)
+                action(DoggoNavigation.HomeDetails(doggoBreedResponseModel))
             }
             .padding(4.dp),
     ) {
@@ -96,9 +94,12 @@ fun SearchItems(
                     .height(120.dp),
                 contentScale = ContentScale.Crop,
                 loading = {
-                    Box(Modifier.matchParentSize()) {
-                        CircularProgressIndicator(Modifier.align(Alignment.Center))
-                    }
+                    Box(
+                        modifier = Modifier.background(
+                            shape = RoundedCornerShape(20.dp),
+                            color = Teal200
+                        )
+                    )
                 },
                 error = {
                     Box(
@@ -117,7 +118,9 @@ fun SearchItems(
                     text = doggoBreedResponseModel.name,
                     style = Typography.h6.copy(fontSize = 16.sp),
                     color = iconTintColor,
-                    modifier = Modifier.padding(8.dp).fillMaxWidth(.80f),
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .fillMaxWidth(.80f),
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1
                 )
@@ -183,7 +186,7 @@ fun SearchItems(
 @Composable
 fun HomeRecentSearchPreview() {
     DoggoAdoptionTheme {
-        HomeRecentSearch(DoggoViewModel().sampleBreed()) { _, _ ->
+        HomeRecentSearch(DoggoViewModel().sampleBreed()) {
             //do something here
         }
     }

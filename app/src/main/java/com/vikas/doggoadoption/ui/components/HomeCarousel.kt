@@ -1,6 +1,7 @@
 package com.vikas.doggoadoption.ui.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -34,7 +35,7 @@ import dev.chrisbanes.accompanist.coil.CoilImage
 @Composable
 fun HomeCarousel(
     observeBreed: List<DoggoBreedResponseModel>?,
-    action: (DoggoNavigation, DoggoBreedResponseModel) -> Unit
+    action: (DoggoNavigation) -> Unit
 ) {
     val widthSize by remember { mutableStateOf(320.dp) }
     Column(modifier = Modifier.padding(16.dp)) {
@@ -52,7 +53,7 @@ fun HomeCarousel(
             modifier = Modifier.fillMaxWidth()
         ) {
             items(observeBreed ?: listOf()) {
-                CarouselItem(widthSize, it)
+                CarouselItem(action, widthSize, it)
                 Spacer(modifier = Modifier.size(16.dp))
             }
         }
@@ -60,8 +61,16 @@ fun HomeCarousel(
 }
 
 @Composable
-fun CarouselItem(widthSize: Dp, doggoBreedResponseModel: DoggoBreedResponseModel) {
-    Box(contentAlignment = Alignment.CenterStart, modifier = Modifier.width(widthSize)) {
+fun CarouselItem(
+    action: (DoggoNavigation) -> Unit,
+    widthSize: Dp,
+    doggoBreedResponseModel: DoggoBreedResponseModel
+) {
+    Box(contentAlignment = Alignment.CenterStart, modifier = Modifier
+        .width(widthSize)
+        .clickable {
+            action(DoggoNavigation.HomeDetails(doggoBreedResponseModel))
+        }) {
 
         CoilImage(
             data = doggoBreedResponseModel.image.url,
@@ -73,9 +82,12 @@ fun CarouselItem(widthSize: Dp, doggoBreedResponseModel: DoggoBreedResponseModel
             contentScale = ContentScale.Crop,
             fadeIn = true,
             loading = {
-                Box(Modifier.matchParentSize()) {
-                    CircularProgressIndicator(Modifier.align(Alignment.Center))
-                }
+                Box(
+                    modifier = Modifier.background(
+                        shape = RoundedCornerShape(20.dp),
+                        color = Teal200
+                    )
+                )
             },
             error = {
                 Box(
@@ -128,6 +140,6 @@ fun CarouselItem(widthSize: Dp, doggoBreedResponseModel: DoggoBreedResponseModel
 @Composable
 fun HomeCarouselPreview() {
     DoggoAdoptionTheme {
-        HomeCarousel(listOf()) { _, _ -> }
+        HomeCarousel(listOf()) { }
     }
 }

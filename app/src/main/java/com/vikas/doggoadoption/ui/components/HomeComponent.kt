@@ -14,7 +14,7 @@ const val HOME_COMPONENT = "HomeComponent"
 fun HomeComponent(
     observeBreed: List<DoggoBreedResponseModel>?,
     liveRecentSearchItems: List<DoggoBreedResponseModel>,
-    action: (DoggoNavigation, DoggoBreedResponseModel) -> Unit,
+    action: (DoggoNavigation) -> Unit,
 ) {
     LazyColumn {
         item {
@@ -33,8 +33,6 @@ fun HomeComponentPreview() {
         HomeComponent(
             DoggoViewModel().sampleBreed(),
             DoggoViewModel().sampleBreed()
-        ) { _, _ ->
-
-        }
+        ) {}
     }
 }
