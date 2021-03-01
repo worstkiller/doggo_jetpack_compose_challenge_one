@@ -1,7 +1,9 @@
 package com.vikas.doggoadoption.ui.components
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -9,12 +11,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.Build
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -23,58 +25,71 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vikas.doggoadoption.R
+import com.vikas.doggoadoption.data.DoggoNavigation
 import com.vikas.doggoadoption.ui.theme.DoggoAdoptionTheme
 import com.vikas.doggoadoption.ui.theme.Typography
 import com.vikas.doggoadoption.ui.theme.iconTintColor
 
 @Composable
-fun DetailsComponent() {
-
+fun DetailsComponent(action: (screen: DoggoNavigation) -> Unit) {
+    val context = LocalContext.current
     val temperament = "Stubborn, Curious, Playful, Adventurous, Active, Fun-loving".split(",")
 
     Column(modifier = Modifier.fillMaxWidth()) {
 
-        Box(contentAlignment = Alignment.BottomCenter) {
+        Box {
 
-            Image(
-                alignment = Alignment.TopCenter,
-                painter = painterResource(id = R.drawable.sample_image_dog),
-                contentDescription = "full screen details",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(.60f),
-                contentScale = ContentScale.Crop,
-            )
+            Box(contentAlignment = Alignment.BottomCenter) {
 
-            Icon(
-                imageVector = Icons.Rounded.ArrowBack,
-                contentDescription = "back",
-                tint = Color.White
-            )
+                Image(
+                    alignment = Alignment.TopCenter,
+                    painter = painterResource(id = R.drawable.sample_image_dog),
+                    contentDescription = "full screen details",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(.60f),
+                    contentScale = ContentScale.Crop,
+                )
 
-            Box(
-                contentAlignment = Alignment.CenterStart,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .background(
-                        shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
-                        color = MaterialTheme.colors.background
-                    )
-            ) {
-
-                LazyRow(
-                    horizontalArrangement = Arrangement.SpaceAround,
-                    modifier = Modifier.padding(16.dp)
+                Box(
+                    contentAlignment = Alignment.CenterStart,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                        .background(
+                            shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
+                            color = MaterialTheme.colors.background
+                        )
                 ) {
-                    items(temperament) {
-                        Card(shape = RoundedCornerShape(10.dp), modifier = Modifier.padding(8.dp)) {
-                            Text(text = it, modifier = Modifier.padding(8.dp))
+
+                    LazyRow(
+                        horizontalArrangement = Arrangement.SpaceAround,
+                        modifier = Modifier.padding(16.dp)
+                    ) {
+                        items(temperament) {
+                            Card(
+                                shape = RoundedCornerShape(10.dp),
+                                modifier = Modifier.padding(8.dp)
+                            ) {
+                                Text(text = it, modifier = Modifier.padding(8.dp))
+                            }
                         }
                     }
                 }
             }
+
+            Icon(
+                imageVector = Icons.Rounded.ArrowBack,
+                contentDescription = "back",
+                tint = Color.White,
+                modifier = Modifier
+                    .padding(16.dp)
+                    .clickable {
+                        action(DoggoNavigation.HOME)
+                    }
+            )
         }
+
 
         Column(
             modifier = Modifier
@@ -125,7 +140,12 @@ fun DetailsComponent() {
         Spacer(modifier = Modifier.size(30.dp))
 
         Button(
-            onClick = { }, modifier = Modifier
+            onClick = {
+                Toast.makeText(
+                    context, "Thanks for your interest ❤️\u200D\uD83D\uDD25",
+                    Toast.LENGTH_LONG
+                ).show()
+            }, modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
             shape = RoundedCornerShape(15.dp)
@@ -140,6 +160,6 @@ fun DetailsComponent() {
 @Composable
 fun DetailsComponentPreview() {
     DoggoAdoptionTheme {
-        DetailsComponent()
+        DetailsComponent() {}
     }
 }
